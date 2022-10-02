@@ -18,7 +18,7 @@ for i in range(Tests):
     dur_naive = round(( time.time() - start_naive ) * 10**6, 2)
     
     start_opti = time.time()
-    ans_opti = greedy_max_pair_prod(ListSize,ListOne,ListTwo)
+    ans_opti = greedy_max_pair_prod_iter(ListSize,ListOne,ListTwo)
     dur_opti = round((time.time() - start_opti) * 10**6, 2)
     
     print(f'Iteration= {i} -  {ans_naive}, {ans_opti}    -  {dur_naive}, {dur_opti}')
