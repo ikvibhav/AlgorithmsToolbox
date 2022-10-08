@@ -1,28 +1,26 @@
 import random
 import sys
-#from fibonacci import *
-#from fibonacci_lastdigit import *
-from gcd import *
+from maxseqpairprod import *
 import time
+import numpy as np
 
-tests = int(sys.argv[1])
-value_range = int(sys.argv[2])
+Tests = int(sys.argv[1])
+ListRange = int(sys.argv[2])
+ListSize = int(sys.argv[3])
 
-for i in range(tests):
-    m = random.randint(1,value_range)
-    n = random.randint(m,value_range)
+for i in range(Tests):
 
-    #ans_naive = naive_fibonacci_generator(n)
-    #ans_opti = optimised_fibonacci_generator(n)
+    ListOne = list(np.random.randint(1,ListRange,ListSize))
+    ListTwo = list(np.random.randint(1,ListRange,ListSize))
 
     start_naive = time.time()
-    ans_naive = naive_gcd(m,n)
+    ans_naive = greedy_max_pair_prod_iterator(ListSize,ListOne,ListTwo)
     dur_naive = round(( time.time() - start_naive ) * 10**6, 2)
     
     start_opti = time.time()
-    ans_opti = opti_gcd(m,n)
+    ans_opti = greedy_max_pair_prod_iter(ListSize,ListOne,ListTwo)
     dur_opti = round((time.time() - start_opti) * 10**6, 2)
     
-    print(f'n= {n} -  {ans_naive}, {ans_opti}    -  {dur_naive}, {dur_opti}')
+    print(f'Iteration= {i} -  {ans_naive}, {ans_opti}    -  {dur_naive}, {dur_opti}')
     if ans_naive != ans_opti:
         break
