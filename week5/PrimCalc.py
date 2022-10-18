@@ -1,30 +1,26 @@
 import sys
 
-# def PrimCalc_DP(N):
-#     PrimCalcOptions = [1,2,3]
-#     PrimCalcList = [sys.maxsize]*(N)
-#     PrimCalcComputationDict = {}
+#How to obtain the path of the computation sequence?
+def PrimCalc_DP(N):
+    MinCompDict = {}
+    ComputationSequenceDict = {}
     
-#     for i in range(N):
-#         CurrVal = i+1
-#         NumComps = 0
-#         ComputationList = []
-#         ComputationList.append(CurrVal) 
+    MinCompDict[1] = 0
+    MinCompDict[2] = 1
+    MinCompDict[3] = 1
 
-#         while CurrVal > 1:
-#             for Opt in PrimCalcOptions:
-#                 if Opt == 1:
-#                     SubRes = PrimCalcList[CurrVal-Opt]
-#                 elif CurrVal%Opt == 0:
-#                     SubRes = PrimCalcList[CurrVal//Opt]
-                
-#                 if SubRes!= sys.maxsize and SubRes < PrimCalcList[Currval]:
-#                     PrimCalcList[Currval] = SubRes + 1
-                
-#         PrimCalcList[i] = NumComps
-#         PrimCalcComputationDict[i] = ComputationList
+    ComputationSequenceDict[1] = [1]
+    ComputationSequenceDict[2] = [1,2]
+    ComputationSequenceDict[3] = [1,2,3]
+
+    for CurrN in range(4,N+1):
+        res1 = MinCompDict[CurrN-1]
+        res2 = MinCompDict[CurrN//2] if CurrN%2==0 else sys.maxsize
+        res3 = MinCompDict[CurrN//3] if CurrN%3==0 else sys.maxsize
+        MinCompDict[CurrN] = 1+min(res1,res2,res3)
     
-#     return PrimCalcList[N-1], PrimCalcComputationDict[N-1][::-1]
+    return MinCompDict[N]
+
 
 def PrimCalc_Greedy(N):
     PrimCalcList = [0]*(N)
@@ -53,6 +49,5 @@ def PrimCalc_Greedy(N):
 
 if __name__ == "__main__":
     N = int(input())
-    NumComps, CompsList = PrimCalc_Greedy(N)
+    NumComps = PrimCalc_DP(N)
     print(NumComps)
-    print(*CompsList)
