@@ -53,6 +53,6 @@ def PrimCalc_Greedy(N):
 
 if __name__ == "__main__":
     N = int(input())
-    NumComps, CompsList = PrimCalc_DP(N)
+    NumComps, CompsList = PrimCalc_Greedy(N)
     print(NumComps)
     print(*CompsList)
