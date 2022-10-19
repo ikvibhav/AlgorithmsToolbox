@@ -49,6 +49,5 @@ def PrimCalc_Greedy(N):
 
 if __name__ == "__main__":
     N = int(input())
-    NumComps, OpsSequence = PrimCalc_DP(N)
+    NumComps = PrimCalc_DP(N)
     print(NumComps)
-    print(*OpsSequence)
