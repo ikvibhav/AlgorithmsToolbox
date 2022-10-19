@@ -1,6 +1,13 @@
 import sys
+import itertools
 
 #How to obtain the path of the computation sequence?
+
+def GetMinKey(GMK_Dict, GMK_Val):
+    for key_i,value_i in GMK_Dict.items():
+        if value_i==GMK_Val:
+            return key_i
+
 def PrimCalc_DP(N):
     MinCompDict = {}
     ComputationSequenceDict = {}
@@ -9,17 +16,42 @@ def PrimCalc_DP(N):
     MinCompDict[2] = 1
     MinCompDict[3] = 1
 
-    ComputationSequenceDict[1] = [1]
-    ComputationSequenceDict[2] = [1,2]
-    ComputationSequenceDict[3] = [1,2,3]
+    ComputationSequenceDict[1] = 1
+    ComputationSequenceDict[2] = 1
+    ComputationSequenceDict[3] = 1
+
+    if N<4:
+        return MinCompDict[N], ComputationSequenceDict[N]
 
     for CurrN in range(4,N+1):
-        res1 = MinCompDict[CurrN-1]
-        res2 = MinCompDict[CurrN//2] if CurrN%2==0 else sys.maxsize
-        res3 = MinCompDict[CurrN//3] if CurrN%3==0 else sys.maxsize
-        MinCompDict[CurrN] = 1+min(res1,res2,res3)
+        ind1 = CurrN-1
+        ind2 = CurrN//2 if CurrN%2==0 else -1
+        ind3 = CurrN//3 if CurrN%3==0 else -2
+
+        SubRes = {}
+        SubRes[ind1] = MinCompDict[ind1]
+        SubRes[ind2] = MinCompDict[ind2] if ind2>0 else sys.maxsize
+        SubRes[ind3] = MinCompDict[ind3] if ind3>0 else sys.maxsize
+
+        MinVal = min(SubRes.values())
+        MinValKey = GetMinKey(SubRes, MinVal)
+
+        MinCompDict[CurrN] = 1+MinVal
+        ComputationSequenceDict[CurrN] = []
+        ComputationSequenceDict[CurrN].append(ComputationSequenceDict[MinValKey])
+        ComputationSequenceDict[CurrN].append(MinValKey)
     
-    return MinCompDict[N]
+    ComputationSequenceDict[N].append(N)
+
+    flat_list = []
+    for element in ComputationSequenceDict[N]:
+        if type(element) is list:
+            for item in element:
+                flat_list.append(item)
+        else:
+            flat_list.append(element)
+    
+    return MinCompDict[N], flat_list
 
 
 def PrimCalc_Greedy(N):
@@ -49,5 +81,9 @@ def PrimCalc_Greedy(N):
 
 if __name__ == "__main__":
     N = int(input())
-    NumComps = PrimCalc_DP(N)
+    NumComps,OpsSequence = PrimCalc_DP(N)
     print(NumComps)
+    if type(OpsSequence) is list:
+        print(*OpsSequence)
+    else:
+        print(OpsSequence)
