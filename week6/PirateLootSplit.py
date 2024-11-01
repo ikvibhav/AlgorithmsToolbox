@@ -8,17 +8,26 @@ def PirateLootSplit(PLT_W, PLT_Array):
     LootSplit = 0
     PLTMatrix = [[0.0]*(PLT_N+1) for _ in range(PLT_W+1)]
     for i in range(1, PLT_W+1):
+        AlreadyUsedi = []
+        AlreadyUsedj = []
+        #import pdb; pdb.set_trace()
         for j in range(1, PLT_N+1):
-            PLTMatrix[i][j] = PLTMatrix[i][j-1]
-            #import pdb; pdb.set_trace()
-            if PLT_Array[j-1]<=i:
-                temp = PLTMatrix[i-PLT_Array[j-1]][j-1] + PLT_Array[j-1]
+            
+            if j-1 not in AlreadyUsedj and i not in AlreadyUsedi:
+                PLTMatrix[i][j] = PLTMatrix[i][j-1]
+            
+            if PLT_Array[j-1]<=i and (j-1 not in AlreadyUsedj):
+                itracker = i-PLT_Array[j-1]
+                if itracker not in AlreadyUsedi:
+                    temp = PLTMatrix[itracker][j-1] + PLT_Array[j-1]
                 if temp > PLTMatrix[i][j]:
                     PLTMatrix[i][j] = temp
-            if PLTMatrix[i][j] == PLT_W: 
+            
+            if PLTMatrix[i][j] == PLT_W:
                 LootSplit += 1
+                AlreadyUsedi.append(itracker)
+                AlreadyUsedj.append(j-1)
 
-    #import pdb; pdb.set_trace()
     if LootSplit < 3: 
         return 0
     return 1

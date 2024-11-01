@@ -1,11 +1,17 @@
+
+# Time Complexity: O(n)
+# Space Complexity: O(1)
 def greedy_min_tank_refill(G_CityDistance, G_MinRefillDistance, G_NumberOfStops, G_StopArray):
     NumRefills = 0
     CurrentRefill = 0
 
+    # Iterate through the stops
     while CurrentRefill <= G_NumberOfStops:
         LastRefill = CurrentRefill
         
         #import pdb; pdb.set_trace()
+        # Check if the next stop is within the minimum refill distance
+        # Until next stop is within the minimum refill distance, keep incrementing the CurrentRefill index
         while CurrentRefill <= G_NumberOfStops and G_StopArray[CurrentRefill+1] - G_StopArray[LastRefill] <= G_MinRefillDistance:
                 CurrentRefill += 1
         
