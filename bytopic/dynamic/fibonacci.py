@@ -4,9 +4,7 @@ import argparse
 # Time Complexity: O(2^n)
 # Space Complexity: O(n)
 def fibonacci1(n):
-    if n == 0:
-        return 0
-    elif n == 1:
+    if n <= 2:
         return 1
     else:
         return fibonacci1(n-1) + fibonacci1(n-2)
